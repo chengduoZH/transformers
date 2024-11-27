@@ -439,6 +439,7 @@ class GenerationConfig(PushToHubMixin):
         self.num_return_sequences = kwargs.pop("num_return_sequences", 1)
         self.output_attentions = kwargs.pop("output_attentions", False)
         self.output_hidden_states = kwargs.pop("output_hidden_states", False)
+        self.output_last_hidden_states = kwargs.pop("output_last_hidden_states", False)
         self.output_scores = kwargs.pop("output_scores", False)
         self.output_logits = kwargs.pop("output_logits", None)
         self.return_dict_in_generate = kwargs.pop("return_dict_in_generate", False)
