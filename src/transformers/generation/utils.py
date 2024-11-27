@@ -3392,6 +3392,7 @@ class GenerationMixin:
         eos_token_id = generation_config._eos_token_tensor
         output_attentions = generation_config.output_attentions
         output_hidden_states = generation_config.output_hidden_states
+        output_last_hidden_states = generation_config.output_last_hidden_states
         output_scores = generation_config.output_scores
         output_logits = generation_config.output_logits
         return_dict_in_generate = generation_config.return_dict_in_generate
@@ -3418,6 +3419,7 @@ class GenerationMixin:
         decoder_attentions = () if (return_dict_in_generate and output_attentions) else None
         cross_attentions = () if (return_dict_in_generate and output_attentions) else None
         decoder_hidden_states = () if (return_dict_in_generate and output_hidden_states) else None
+        decoder_last_hidden_states = () if (return_dict_in_generate and output_last_hidden_states) else None
 
         # if model is an encoder-decoder, retrieve encoder attention weights and hidden states
         if return_dict_in_generate and self.config.is_encoder_decoder:
@@ -3441,7 +3443,7 @@ class GenerationMixin:
 
             # prepare variable output controls (note: some models won't accept all output controls)
             model_inputs.update({"output_attentions": output_attentions} if output_attentions else {})
-            model_inputs.update({"output_hidden_states": output_hidden_states} if output_hidden_states else {})
+            model_inputs.update({"output_hidden_states": output_hidden_states or output_last_hidden_states} if output_hidden_states else {})
 
             # if sequential is True, split the input to batches of batch_size and run sequentially
             if sequential:
