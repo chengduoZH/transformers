@@ -3216,7 +3216,8 @@ class GenerationMixin:
 
             # prepare variable output controls (note: some models won't accept all output controls)
             model_inputs.update({"output_attentions": output_attentions} if output_attentions else {})
-            model_inputs.update({"output_hidden_states": output_hidden_states} if output_hidden_states else {})
+            model_inputs.update({"output_hidden_states": output_hidden_states or output_last_hidden_states}
+                                if output_hidden_states or output_last_hidden_states else {})
 
             # forward pass to get next token
             outputs = self(**model_inputs, return_dict=True)
@@ -3258,10 +3259,10 @@ class GenerationMixin:
                         else (outputs.hidden_states,)
                     )
                 if output_last_hidden_states:
-                    decoder_last_hidden_states = (
+                    decoder_last_hidden_states += (
                         (outputs.decoder_hidden_states,)
                         if self.config.is_encoder_decoder
-                        else (outputs.hidden_states,)
+                        else (outputs.hidden_states[-1],)
                     )
 
 
